@@ -1,0 +1,5 @@
+#!/bin/sh
+exec 2>&1
+export HOME=/var/lib/plasticscm
+cd /opt/plasticscm5/server
+exec chpst -u _plasticscm:_plasticscm /opt/plasticscm5/server/plasticd --daemon

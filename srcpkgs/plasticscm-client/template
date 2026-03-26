@@ -1,0 +1,67 @@
+# Template file for 'plasticscm-client'
+pkgname=plasticscm-client
+version=11.0.16.10042
+revision=1
+archs="x86_64"
+short_desc="Unity Version Control (Plastic SCM) - full client with GUI and server"
+maintainer="Sami Batuhan Basmaz Olmez <sb.basmazolmez@gmail.com>"
+license="custom:Proprietary"
+homepage="https://www.plasticscm.com"
+repository=nonfree
+restricted=yes
+nostrip=yes
+nopie=yes
+create_wrksrc=yes
+
+system_accounts="_plasticscm"
+_plasticscm_homedir="/var/lib/plasticscm"
+make_dirs="/var/lib/plasticscm 0750 _plasticscm _plasticscm"
+
+_baseurl="https://www.plasticscm.com/plasticrepo/stable/debian/./amd64"
+distfiles="
+ ${_baseurl}/plasticscm-client-core_${version}_amd64.deb
+ ${_baseurl}/plasticscm-client-gui_${version}_amd64.deb
+ ${_baseurl}/plasticscm-theme_${version}_amd64.deb
+ ${_baseurl}/plasticscm-server-core_${version}_amd64.deb"
+checksum="
+ fd62f9e418dc9c619d29644d4fab8d9ad287ad8e1171ac8a9e9be7e1235a3f1b
+ 0051404fbe4e2f2fb635b0bfdefdb140ce44a4838da121ba424deb7253287794
+ b5ff31a39083dc327138b2ce54985bfe31a786bb843008e469cb4ff1fe7378a8
+ c2ddfecb1396baecf892ec261e7deccfebea7bd067b2f42eb162c7f20c658a59"
+
+skip_extraction="
+ plasticscm-client-core_${version}_amd64.deb
+ plasticscm-client-gui_${version}_amd64.deb
+ plasticscm-theme_${version}_amd64.deb
+ plasticscm-server-core_${version}_amd64.deb"
+
+do_extract() {
+	local debdir="${XBPS_SRCDISTDIR}/${pkgname}-${version}"
+	for deb in "${debdir}"/*.deb; do
+		ar x "${deb}"
+		bsdtar xf data.tar.xz -C "${wrksrc}"
+		rm -f data.tar.xz control.tar.gz control.tar.xz debian-binary
+	done
+}
+
+do_install() {
+	# Install /opt/plasticscm5 tree (client + server + theme)
+	vmkdir opt/plasticscm5
+	vcopy "${wrksrc}/opt/plasticscm5" opt/
+
+	# /usr/bin symlinks
+	vmkdir usr/bin
+	ln -sfr "${DESTDIR}/opt/plasticscm5/client/cm" \
+		"${DESTDIR}/usr/bin/cm"
+	ln -sfr "${DESTDIR}/opt/plasticscm5/client/linplasticx" \
+		"${DESTDIR}/usr/bin/plasticgui"
+	ln -sfr "${DESTDIR}/opt/plasticscm5/client/lingluonx" \
+		"${DESTDIR}/usr/bin/gluon"
+
+	# Desktop entries from the gui package
+	vcopy "${wrksrc}/usr/share/applications" usr/share/
+}
+
+post_install() {
+	vsv plasticscm-server
+}
