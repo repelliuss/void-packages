@@ -1,21 +1,21 @@
 # Template file for 'premake5'
 pkgname=premake5
-version=5.0.0beta3
+version=5.0.0beta8
 revision=1
 _version=${version/beta/-beta}
-build_style=gnu-makefile
-make_build_args="-C build/gmake2.unix config=release"
-hostmakedepends="unzip"
-makedepends="libuuid-devel"
+archs="x86_64"
+build_style=fetch
 short_desc="Cross-platform, open-source build system"
 maintainer="Orphaned <orphan@voidlinux.org>"
 license="BSD-3-Clause"
 homepage="https://premake.github.io/"
 changelog="https://github.com/premake/premake-core/blob/v${_version}/CHANGES.txt"
-distfiles="https://github.com/premake/premake-core/releases/download/v${_version}/premake-${_version}-src.zip"
-checksum=4b2b1fe9772ca1caf689c07e8c32f108b8393922956f602ddaf404f73467bd83
+distfiles="https://github.com/premake/premake-core/releases/download/v${_version}/premake-${_version}-linux.tar.gz
+ https://raw.githubusercontent.com/premake/premake-core/v${_version}/LICENSE.txt>LICENSE.txt"
+checksum="63edd3e7461eebdd45b500a3c7e8ad4e7a67d68f230010f9a97cbb71b4ec59c8
+ 6c052cc899de4d00ac03d4ab590f6c0107f9dbd52e72154293cdd2c341743faf"
 
 do_install() {
-	  vbin bin/release/premake5
-	  vlicense LICENSE.txt
+	vbin premake5
+	vlicense LICENSE.txt
 }
