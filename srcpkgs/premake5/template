@@ -4,7 +4,6 @@ version=5.0.0beta8
 revision=1
 _version=${version/beta/-beta}
 archs="x86_64"
-build_style=fetch
 short_desc="Cross-platform, open-source build system"
 maintainer="Orphaned <orphan@voidlinux.org>"
 license="BSD-3-Clause"
