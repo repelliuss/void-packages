@@ -14,13 +14,6 @@ distfiles="https://github.com/premake/premake-core/releases/download/v${_version
 checksum="63edd3e7461eebdd45b500a3c7e8ad4e7a67d68f230010f9a97cbb71b4ec59c8
  6c052cc899de4d00ac03d4ab590f6c0107f9dbd52e72154293cdd2c341743faf"
 
-do_extract() {
-	mkdir -p "${wrksrc}"
-	tar -xzf "${XBPS_SRCDISTDIR}/${pkgname}-${version}/premake-${_version}-linux.tar.gz" \
-		-C "${wrksrc}"
-	cp "${XBPS_SRCDISTDIR}/${pkgname}-${version}/LICENSE.txt" "${wrksrc}/"
-}
-
 do_install() {
 	vbin premake5
 	vlicense LICENSE.txt
